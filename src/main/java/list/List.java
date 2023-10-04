@@ -1,4 +1,5 @@
 package list;
+
 public class List {
     private List sublist;
     private int index;
@@ -9,7 +10,10 @@ public class List {
     }
 
     public List(List list) {
-        //
+        index = 0;
+        for(int i = 0; i < list.length(); i++) {
+            add(list.getElement(i));
+        }
     }
 
     private List(int index) {
@@ -115,13 +119,15 @@ public class List {
         return ret;
     }
 
-    public void add(Object element) {
-        if(sublist != null) {
-            sublist.add(element);
-            return;
+    public void add(Object... elements) {
+        for(Object singleElement: elements) {
+            if (sublist != null) {
+                sublist.add(singleElement);
+            }
+            else {
+                this.element = singleElement;
+                sublist = new List(index);
+            }
         }
-
-        this.element = element;
-        sublist = new List(index);
     }
 }
