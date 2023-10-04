@@ -1,22 +1,27 @@
 package list;
 public class List {
     private List sublist;
-    private int number, index;
+    private int index;
+    private Object element;
 
     public List() {
         index = 0;
+    }
+
+    public List(List list) {
+        //
     }
 
     private List(int index) {
         this.index = index + 1;
     }
 
-    public int getElements() {
-        if(number == 0 && sublist == null) {
+    public int length() {
+        if(element == null && sublist == null) {
             return index;
         }
 
-        return sublist.getElements();
+        return sublist.length();
     }
 
     public void sort() {
@@ -27,52 +32,53 @@ public class List {
         //
     }
 
-    // Remove the latest element
-    public int remove() {
-        return remove(getElements());
-    }
+    // Get the element at the index (INDEX STARTS WITH 0)
 
-    // Get the number at the index (INDEX STARTS WITH 0)
-
-    // - If the function fails,  an array with -1 and 0 is returned
-    // - If the function succeds, an array with 0, and the number requested is returned
-    public int[] getNumber(int index) {
-        if(index > getElements()) {
-            int ret[] = {-1, 0};
-            return ret;
-        }
+    // - If the function fails, null is returned
+    // - If the function succeeds, the requested element is returned
+    public Object getElement(int index) {
+        if(index > length())
+            return null;
 
         if(index != this.index)
-            return sublist.getNumber(index);
+            return sublist.getElement(index);
 
-        int ret[] = {0, number};
-        return ret;
+        return element;
+    }
+
+    // Remove the latest element
+    public int remove() {
+        return remove(length() - 1);
     }
 
     // Removes a specific element
     public int remove(int index) {
-        if(index > getElements())
+        // Check if the index is greater than the length of the list
+        if(index > length() || index < 0)
             return -1;
 
-        if(index != this.index)
+        // Check if the desired element is the current
+        if(this.index != index)
             return sublist.remove(index);
 
-
-        int rec, x[] = new int[2];
         // Removes the element
+        // 1) Copy the next element
+        if(sublist == null) {
+            element = null;
+            return 0;
+        }
 
-        x = getNumber(index + 1);
-        rec = x[1];
+        element = sublist.element;
 
-        number = sublist.number;
-
-        if(sublist.number == 0 && sublist.sublist == null) {
-            number = 0;
+        // 2) Check if this is the last element, if yes remove the reference
+        if(sublist.element == null && sublist.sublist == null) {
+            element = null;
             sublist = null;
 
             return 0;
         }
 
+        // 3) Else, just repeat till you find the last element
         return remove(index + 1);
     }
 
@@ -84,34 +90,38 @@ public class List {
             ret += "{";
         }
 
-        // Se questo è il primo elemento E la sottolista NON è vuota
-        if(index == 0 && sublist != null) {
-            ret += number;
-            ret += sublist.toString();
-
-            return ret;
-        }
-
         // Se l'elemento della lista è 0, e la sottolista esiste (ultimo elemento)
-        if(number == 0 && sublist == null) {
+        if(element == null && sublist == null) {
             return ret += "}";
         }
 
-        ret += "; ";
-        ret += number;
+        if(index != 0)
+            ret += ", ";
+
+        if(element instanceof String)
+            ret += '"';
+        else if (element instanceof Character)
+            ret += "'";
+
+        ret += element;
+
+        if(element instanceof String)
+            ret += '"';
+        else if (element instanceof Character)
+            ret += "'";
 
         ret += sublist.toString();
 
         return ret;
     }
 
-    public void add(int number) {
+    public void add(Object element) {
         if(sublist != null) {
-            sublist.add(number);
+            sublist.add(element);
             return;
         }
 
-        this.number = number;
+        this.element = element;
         sublist = new List(index);
     }
 }

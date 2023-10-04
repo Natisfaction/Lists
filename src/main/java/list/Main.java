@@ -3,25 +3,17 @@ package list;
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
-    public static void main(String args[]){
-        List l = new List();
-        int x[] = new int[2];
+    public static void main(String args[]) {
+        List l1 = new List();
+        List l2 = new List();
 
-        for(int i = 0; i < 10; i++)
-            l.add(i);
+        for(int i = 0; i < 10; i++) {
+            l1.add(i);
+            l2.add(i);
+        }
 
-        System.out.print(l.toString()+"\n"+l.getElements()+"\n");
+        l1.add(l2);
 
-        x = l.getNumber(4);
-
-        if(x[0] == 0)
-            System.out.print(x[1]+"\n");
-
-        System.out.print(l.toString()+"\n"+l.getElements()+"\n");
-
-        x = l.getNumber(4);
-
-        if(x[0] == 0)
-            System.out.print(x[1]);
+        System.out.print(l1.toString()+"\n"+l1.length()+"\n");
     }
 }
