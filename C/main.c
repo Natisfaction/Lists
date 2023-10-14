@@ -9,8 +9,8 @@ int main(){
     int x = 7;
     int c = 5;
 
-    addElement(&l1, &c);
-    addElement(&l1, &x);
+    addInt(&l1, &x);
+    addInt(&l1, &c);
 
     printList(&l1);
 
